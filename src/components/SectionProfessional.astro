@@ -1,0 +1,50 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import ProjectCard from './ProjectCard.astro';
+---
+<section
+  id="professional"
+  data-accent="249 115 22"
+  class="py-24 px-6 max-w-6xl mx-auto"
+>
+  <SectionHeader
+    index="01"
+    title="Professional Work"
+    subtitle="Shipped commercial titles on Apple Arcade — real teams, strict standards, production-grade code."
+  />
+
+  <div class="grid md:grid-cols-2 gap-4">
+    <ProjectCard
+      highlight
+      title="Pocket City 2+"
+      year="2024"
+      image="https://github.com/user-attachments/assets/d5c2dac6-6979-4c55-90ae-14df5ae64b75"
+      description="Adapted Pocket City 2 — an extensive, successful game on App Store, Steam, and Google Play — for Apple Arcade, Apple's subscription catalog with ~200–300 games and 100 million users. As lead programmer, I implemented Apple Arcade's requirements including an automatic cross-device data backup and recovery system, built platform-specific functionality across all Apple platforms, and polished the full experience to Apple's quality standards."
+      tags={["Unity", "C#", "Apple Arcade", "Cross-Platform", "Data Systems"]}
+      links={[
+        { label: "App Store", href: "https://apps.apple.com/us/app/pocket-city-2/id1533709428" },
+        { label: "Steam", href: "https://store.steampowered.com/app/3566200/Pocket_City_2/" }
+      ]}
+    />
+    <ProjectCard
+      title="Farmside"
+      year="2024"
+      image="https://github.com/user-attachments/assets/0f7c4a1b-c1e5-4a70-bebc-40ec1bd7e252"
+      description="Delivered a major update for Farmside, a large-scale Apple Arcade title. The scope of the project demanded extreme care on every change and fast execution to meet strict deadlines. A project where precision and speed were equally critical."
+      tags={["Unity", "C#", "Apple Arcade", "Production"]}
+      links={[
+        { label: "Farmside", href: "https://farmsidegame.com/" }
+      ]}
+    />
+    <ProjectCard
+      title="VR Interior Design Experience"
+      year="2024"
+      video="/vr-interior.mp4"
+      videoPoster="/vr-interior-poster.jpg"
+      videoStart={3}
+      wide={true}
+      description="Collaborated closely with an interior design firm to build an immersive VR walkthrough for client presentations. Worked deep in Unity's HDRP pipeline — physically-based reflections, emissive lighting, area lights, and baked/real-time GI. Focused heavily on optimization: occlusion culling, LOD systems, draw call batching, and frame timing to hit stable VR performance targets."
+      tags={["Unity", "C#", "HDRP", "VR", "Lighting", "Optimization"]}
+    />
+  </div>
+</section>

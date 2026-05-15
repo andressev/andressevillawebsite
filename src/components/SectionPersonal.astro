@@ -1,0 +1,65 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import ProjectCard from './ProjectCard.astro';
+---
+<section
+  id="personal"
+  data-accent="168 85 247"
+  class="py-24 px-6 max-w-6xl mx-auto"
+>
+  <SectionHeader
+    index="03"
+    title="Personal Projects"
+    subtitle="Generative systems, real-time graphics, and computation built out of curiosity."
+  />
+
+  <div class="grid md:grid-cols-2 gap-4">
+    <!-- GridSpace — merged wide card with both GIFs -->
+    <article class="reveal group relative border border-white/[0.08] rounded-sm transition-all duration-300 overflow-hidden md:col-span-2 hover:border-[color:rgb(var(--accent)/0.35)] hover:bg-[color:rgb(var(--accent)/0.05)]">
+      <div class="grid grid-cols-2 border-b border-white/[0.06]">
+        <img src="/gridspace1.gif" alt="GridSpace mutation mode" class="w-full aspect-video object-cover opacity-75 group-hover:opacity-95 transition-opacity duration-300 border-r border-white/[0.06]" loading="lazy" />
+        <img src="/gridspace2.gif" alt="GridSpace neighborhood picker" class="w-full aspect-video object-cover opacity-75 group-hover:opacity-95 transition-opacity duration-300" loading="lazy" />
+      </div>
+      <div class="p-6">
+        <div class="flex items-start justify-between gap-4 mb-3">
+          <h3 class="font-mono text-xs tracking-widest px-2.5 py-1 rounded-sm border border-[color:rgb(var(--accent)/0.35)] text-white/80 group-hover:text-white group-hover:border-[color:rgb(var(--accent)/0.75)] bg-black/20 transition-colors">GridSpace — Cellular Automata Engine</h3>
+          <div class="flex items-center gap-3 shrink-0">
+            <a href="https://github.com/andressev/GridSpacee" target="_blank" rel="noopener noreferrer" class="text-xs text-white/30 hover:text-[color:rgb(var(--accent))] transition-colors border border-white/[0.08] px-2 py-0.5 rounded-sm hover:border-[color:rgb(var(--accent)/0.4)]">GitHub ↗</a>
+            <a href="https://www.youtube.com/watch?v=BqFUAaOdQgY" target="_blank" rel="noopener noreferrer" class="text-xs text-white/30 hover:text-[color:rgb(var(--accent))] transition-colors border border-white/[0.08] px-2 py-0.5 rounded-sm hover:border-[color:rgb(var(--accent)/0.4)]">Video ↗</a>
+          </div>
+        </div>
+        <p class="text-sm text-white/45 leading-relaxed mb-4">A cellular automata engine built in Unity with HLSL. Users design custom neighborhoods, combine up to 4 rule sets, and mutate them in real time to explore an infinite space of emergent patterns. There are 10^308 possible states — the number of atoms in the universe is 10^80.</p>
+        <div class="flex flex-wrap gap-2">
+          {["Unity", "HLSL", "C#", "Simulation", "Generative"].map(t => (
+            <span class="font-mono text-xs px-2 py-0.5 rounded-sm bg-white/[0.05] text-white/35 border border-white/[0.08]">{t}</span>
+          ))}
+        </div>
+      </div>
+      <div class="absolute left-0 top-4 bottom-4 w-px bg-[color:rgb(var(--accent))] opacity-0 group-hover:opacity-50 transition-opacity duration-300 rounded-full"></div>
+    </article>
+    <ProjectCard
+      title="Pointcloud — Gravity Simulation"
+      video="https://github.com/user-attachments/assets/5176f8b3-8e50-479f-a63c-6b3ed25c5d67"
+      description="A physically accurate representation of gravity as spacetime curvature, not a force. ~200,000 white points represent 3D space, contracted by a central mass. Points compress more the closer they are to the center, replicating how gravity bends the fabric of spacetime."
+      tags={["TouchDesigner", "GLSL", "Point Cloud", "Physics"]}
+    />
+    <ProjectCard
+      title="Spherical Gravity"
+      video="https://github.com/user-attachments/assets/4e5555e4-b39c-4b27-b432-19360064908a"
+      description="An extension of the gravity simulation — adding a transformation on the angles relative to the origin. No longer physically accurate, but beautiful. Same 200,000-point system pushed into something more abstract."
+      tags={["TouchDesigner", "GLSL", "Generative", "Math"]}
+    />
+    <ProjectCard
+      title="Mandelbrot Explorer"
+      video="/MandelS.mov"
+      description="An interactive tool for exploring the Mandelbrot set, built in GLSL and TouchDesigner. Extended to be audio-reactive — sound parameters drive the fractal visualization in real time."
+      tags={["TouchDesigner", "GLSL", "Fractals", "Audio-Reactive"]}
+    />
+    <ProjectCard
+      title="Mandelbrot 3D — Raymarched"
+      video="https://github.com/user-attachments/assets/5d88fa54-8d69-4e60-a4db-23ef1f518690"
+      description="A 3D version of the Mandelbrot set rendered via raymarching — a technique for projecting volumetric 3D shapes onto a 2D plane using distance functions. Found a 3D Mandelbrot distance function and rendered it with custom lighting in TouchDesigner."
+      tags={["TouchDesigner", "GLSL", "Raymarching", "SDF", "Fractals"]}
+    />
+  </div>
+</section>

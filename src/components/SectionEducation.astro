@@ -1,0 +1,48 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import ProjectCard from './ProjectCard.astro';
+import SectionCanvas from './SectionCanvas.astro';
+import { NEBULA } from '../shaders';
+---
+<section
+  id="education"
+  data-accent="34 197 94"
+  class="relative py-24 px-6 max-w-6xl mx-auto overflow-hidden"
+>
+  <SectionCanvas frag={NEBULA} opacity={0.35} />
+
+  <div style="position:relative;z-index:1">
+    <SectionHeader
+      index="02"
+      title="Educational Games"
+      subtitle="Head programmer at Tera Tech — a series of games supporting educational content for children."
+    />
+    <div class="grid md:grid-cols-2 gap-4">
+      <ProjectCard
+        highlight
+        title="Dive In"
+        image="https://github.com/user-attachments/assets/edef0bae-5085-4f4d-a9eb-0eae193c81eb"
+        description="An ocean-exploration game where players navigate a labyrinthine coral reef searching for sea creatures. Each animal shares fascinating real facts when found. Don't run out of oxygen! A game about learning the ocean and the species that inhabit it."
+        tags={["Unity", "C#", "Education", "Exploration"]}
+      />
+      <ProjectCard
+        title="Meteorite 3D"
+        image="/meteorite3D.gif"
+        description="An AR game using the device gyroscope to pilot a spaceship at high speed through space, dodging asteroids and enemy ships. Mixes action gameplay with general knowledge questions the player must answer to advance. The 3D version evolved from a classic 2D shoot 'em up inspired by 80s–90s arcade games."
+        tags={["Unity", "C#", "AR", "Gyroscope", "Education"]}
+      />
+      <ProjectCard
+        title="Meteorite 2D"
+        image="/meteorite2d.gif"
+        description="The original 2D version of Meteorite — a shoot 'em up in the tradition of 80s–90s arcade games. The foundation that the AR 3D version grew from, combining fast-paced gameplay with trivia questions."
+        tags={["Unity", "C#", "2D", "Shoot 'em up", "Education"]}
+      />
+      <ProjectCard
+        title="MusicBox"
+        image="https://github.com/user-attachments/assets/f2ffffa3-57b5-437c-8bf2-6746c21ff47e"
+        description="A musical memory game. Drums light up in sequence with sound, and the player must replicate the sequence. Each round the sequence grows longer and harder. Simple concept, surprisingly addictive."
+        tags={["Unity", "C#", "Audio", "Memory", "Education"]}
+      />
+    </div>
+  </div>
+</section>

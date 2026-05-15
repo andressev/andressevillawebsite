@@ -1,0 +1,128 @@
+---
+---
+<canvas
+  id="shader-bg"
+  style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;"
+  aria-hidden="true"
+></canvas>
+
+<script>
+const VERT = `
+  attribute vec2 a_position;
+  void main() { gl_Position = vec4(a_position, 0.0, 1.0); }
+`;
+
+const FRAG = `
+  precision mediump float;
+  uniform vec2 u_resolution;
+  uniform float u_time;
+  uniform vec2 u_mouse;
+
+  vec2 zetSq(vec2 z){ return vec2(z.x*z.x-z.y*z.y,2.0*z.x*z.y); }
+  vec2 zetCu(vec2 z){ return vec2(z.x*z.x*z.x-3.0*z.x*z.y*z.y,3.0*z.x*z.x*z.y-z.y*z.y*z.y); }
+  vec2 inv(vec2 z){ float l=dot(z,z); return vec2(z.x,-z.y)/l; }
+  vec2 cmul(vec2 a,vec2 b){ return vec2(a.x*b.x-a.y*b.y,a.x*b.y+a.y*b.x); }
+  vec2 cexp(vec2 z){ float e=exp(z.x); return vec2(e*cos(z.y),e*sin(z.y)); }
+
+  void main(){
+    vec2 p=(2.0*gl_FragCoord.xy-u_resolution)/min(u_resolution.x,u_resolution.y);
+    float r=1.1;
+    vec2 a=vec2(r*cos(u_mouse.x*0.003),                    r*sin(u_mouse.y*0.003));
+    vec2 b=vec2(r*cos(u_time*0.5+1.57+u_mouse.x*0.003),    r*sin(u_time*0.5+1.57+u_mouse.y*0.003));
+    vec2 c=vec2(r*cos(u_time*0.5+3.14+u_mouse.x*0.003),    r*sin(u_time*0.5+3.14+u_mouse.y*0.003));
+    vec2 d=vec2(r*cos(u_time*0.5+4.71+u_mouse.x*0.003),    r*sin(u_time*0.5+4.71+u_mouse.y*0.003));
+    vec2 e=vec2(r*cos(u_time*0.5+6.28+u_mouse.x*0.003),    r*sin(u_time*0.5+6.28+u_mouse.y*0.003));
+    vec2 f=vec2(r*cos(u_time*0.5+7.85+u_mouse.x*0.003),    r*sin(u_time*0.5+7.85+u_mouse.y*0.003));
+    vec2 poly=cmul(a,zetSq(zetCu(p)))+cmul(b,zetSq(zetSq(p)))+cmul(c,zetCu(p))+cmul(d,zetSq(p))+cmul(e,p)+f;
+    vec2 q=inv(poly);
+    vec2 zi=inv(cexp(inv(cos(q))));
+    float len=min(length(zi),1.6);
+    gl_FragColor=vec4(zi.x,zi.y,len,1.0);
+  }
+`;
+
+function compile(gl: WebGLRenderingContext, type: number, src: string) {
+  const s = gl.createShader(type)!;
+  gl.shaderSource(s, src); gl.compileShader(s);
+  if (!gl.getShaderParameter(s, gl.COMPILE_STATUS))
+    console.error(gl.getShaderInfoLog(s));
+  return s;
+}
+
+const canvas = document.getElementById('shader-bg') as HTMLCanvasElement;
+if (canvas) {
+  const gl = canvas.getContext('webgl') as WebGLRenderingContext | null;
+  if (gl) {
+    const prog = gl.createProgram()!;
+    gl.attachShader(prog, compile(gl, gl.VERTEX_SHADER, VERT));
+    gl.attachShader(prog, compile(gl, gl.FRAGMENT_SHADER, FRAG));
+    gl.linkProgram(prog); gl.useProgram(prog);
+
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]), gl.STATIC_DRAW);
+    const pos = gl.getAttribLocation(prog, 'a_position');
+    gl.enableVertexAttribArray(pos);
+    gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+
+    const uRes   = gl.getUniformLocation(prog, 'u_resolution');
+    const uTime  = gl.getUniformLocation(prog, 'u_time');
+    const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+    let mouse       = { x: 0, y: 0 };
+    let targetMouse = { x: 0, y: 0 };
+    let frozenMouse = { x: 0, y: 0 };
+    let inAbout = true;
+    let currentOpacity = 0;
+
+    const OPACITY_BRIGHT = 0.42;
+    const OPACITY_DIM    = 0.07;
+
+    const about = document.getElementById('about');
+    if (about) {
+      new IntersectionObserver(([e]) => {
+        inAbout = e.isIntersecting;
+        if (!inAbout) { frozenMouse.x = mouse.x; frozenMouse.y = mouse.y; }
+      }, { threshold: 0.15 }).observe(about);
+    }
+
+    window.addEventListener('mousemove', (e) => {
+      const dpr = Math.min(window.devicePixelRatio, 1.5);
+      targetMouse.x = e.clientX * dpr;
+      targetMouse.y = (window.innerHeight - e.clientY) * dpr;
+    });
+
+    function resize() {
+      const dpr = Math.min(window.devicePixelRatio, 1.5);
+      canvas.width  = window.innerWidth  * dpr;
+      canvas.height = window.innerHeight * dpr;
+      gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    const start = performance.now();
+    let raf: number;
+    function frame() {
+      currentOpacity += ((inAbout ? OPACITY_BRIGHT : OPACITY_DIM) - currentOpacity) * 0.04;
+      canvas.style.opacity = String(currentOpacity);
+
+      const lerp = inAbout ? 0.05 : 0.01;
+      const tx = inAbout ? targetMouse.x : frozenMouse.x;
+      const ty = inAbout ? targetMouse.y : frozenMouse.y;
+      mouse.x += (tx - mouse.x) * lerp;
+      mouse.y += (ty - mouse.y) * lerp;
+
+      gl.uniform2f(uRes,   canvas.width, canvas.height);
+      gl.uniform1f(uTime,  (performance.now() - start) / 1000);
+      gl.uniform2f(uMouse, mouse.x, mouse.y);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+      raf = requestAnimationFrame(frame);
+    }
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) cancelAnimationFrame(raf); else frame();
+    });
+    frame();
+  }
+}
+</script>

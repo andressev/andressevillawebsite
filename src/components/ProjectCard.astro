@@ -1,0 +1,83 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  tags?: string[];
+  year?: string;
+  links?: { label: string; href: string }[];
+  image?: string;
+  video?: string;
+  videoPoster?: string;
+  videoStart?: number;
+  highlight?: boolean;
+  wide?: boolean;
+}
+const { title, description, tags = [], year, links = [], image, video, videoPoster, videoStart, highlight = false, wide = false } = Astro.props;
+---
+<article
+  class={`reveal group relative border border-white/[0.08] rounded-sm transition-all duration-300 overflow-hidden
+    ${highlight ? 'border-[color:rgb(var(--accent)/0.25)] bg-[color:rgb(var(--accent)/0.04)]' : ''}
+    ${wide ? 'md:col-span-2' : ''}
+    hover:border-[color:rgb(var(--accent)/0.35)] hover:bg-[color:rgb(var(--accent)/0.05)]`}
+>
+  <!-- Media preview -->
+  {video && (
+    <div class="w-full aspect-video bg-black/40 overflow-hidden border-b border-white/[0.06]">
+      <video
+        src={video}
+        poster={videoPoster}
+        data-start={videoStart}
+        loop
+        muted
+        playsinline
+        class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+      />
+    </div>
+  )}
+  {!video && image && (
+    <div class="w-full aspect-video bg-black/40 overflow-hidden border-b border-white/[0.06]">
+      <img
+        src={image}
+        alt={title}
+        class="w-full h-full object-cover opacity-75 group-hover:opacity-95 transition-opacity duration-300"
+        loading="lazy"
+      />
+    </div>
+  )}
+
+  <div class="p-6">
+    <div class="flex items-start justify-between gap-4 mb-3">
+      <h3 class="font-mono text-xs tracking-widest px-2.5 py-1 rounded-sm border border-[color:rgb(var(--accent)/0.35)] text-white/80 group-hover:text-white group-hover:border-[color:rgb(var(--accent)/0.75)] bg-black/20 transition-colors leading-snug">
+        {title}
+      </h3>
+      <div class="flex items-center gap-3 shrink-0">
+        {year && <span class="font-mono text-xs text-white/25">{year}</span>}
+        {links.map((link) => (
+          <a
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-xs text-white/30 hover:text-[color:rgb(var(--accent))] transition-colors border border-white/[0.08] px-2 py-0.5 rounded-sm hover:border-[color:rgb(var(--accent)/0.4)]"
+          >
+            {link.label} ↗
+          </a>
+        ))}
+      </div>
+    </div>
+    <p class="text-sm text-white/45 leading-relaxed mb-4">{description}</p>
+    {tags.length > 0 && (
+      <div class="flex flex-wrap gap-2">
+        {tags.map((tag) => (
+          <span class="font-mono text-xs px-2 py-0.5 rounded-sm bg-white/[0.05] text-white/35 border border-white/[0.08]">
+            {tag}
+          </span>
+        ))}
+      </div>
+    )}
+  </div>
+
+  <!-- Accent left border on hover -->
+  <div
+    class="absolute left-0 top-4 bottom-4 w-px bg-[color:rgb(var(--accent))] opacity-0 group-hover:opacity-50 transition-opacity duration-300 rounded-full"
+  ></div>
+</article>

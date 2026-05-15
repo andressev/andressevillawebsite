@@ -1,0 +1,16 @@
+---
+interface Props {
+  index: string;
+  title: string;
+  subtitle?: string;
+}
+const { index, title, subtitle } = Astro.props;
+---
+<div class="reveal mb-12">
+  <div class="flex items-center gap-4 mb-4">
+    <span class="font-mono text-xs text-[rgb(var(--accent))] opacity-60 tracking-widest">{index}</span>
+    <div class="h-px flex-1 bg-[rgb(var(--accent))/0.15]"></div>
+  </div>
+  <h2 class="text-3xl md:text-4xl font-light text-white tracking-tight">{title}</h2>
+  {subtitle && <p class="mt-3 text-white/40 text-sm max-w-lg leading-relaxed">{subtitle}</p>}
+</div>

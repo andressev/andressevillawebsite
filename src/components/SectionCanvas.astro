@@ -1,0 +1,104 @@
+---
+// Reusable per-section WebGL canvas background.
+// Drop inside any section that has position:relative.
+// The frag shader receives: u_resolution, u_time, u_mouse (always available).
+interface Props {
+  frag: string;        // GLSL fragment shader source
+  opacity?: number;    // max opacity when section is visible (default 0.28)
+  mouse?: boolean;     // whether to track live mouse (default false)
+}
+const { frag, opacity = 0.28, mouse = false } = Astro.props;
+const id = `sc-${Math.random().toString(36).slice(2, 9)}`;
+---
+<canvas
+  id={id}
+  class="absolute inset-0 w-full h-full pointer-events-none"
+  style="opacity:0;z-index:0;"
+  aria-hidden="true"
+></canvas>
+
+<script define:vars={{ fragSrc: frag, canvasId: id, maxOpacity: opacity, trackMouse: mouse }}>
+const VERT = `attribute vec2 a_pos; void main(){ gl_Position=vec4(a_pos,0.,1.); }`;
+
+const canvas = document.getElementById(canvasId);
+if (!canvas) throw new Error('SectionCanvas: no canvas ' + canvasId);
+
+const gl = canvas.getContext('webgl');
+if (!gl) { console.warn('WebGL not available'); }
+else {
+  // --- compile ---
+  function mk(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS))
+      console.error('Shader error:', gl.getShaderInfoLog(s));
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, mk(gl.VERTEX_SHADER, VERT));
+  gl.attachShader(prog, mk(gl.FRAGMENT_SHADER, fragSrc));
+  gl.linkProgram(prog); gl.useProgram(prog);
+
+  // --- quad ---
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_pos');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+
+  const uRes   = gl.getUniformLocation(prog, 'u_resolution');
+  const uTime  = gl.getUniformLocation(prog, 'u_time');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // --- resize ---
+  function resize() {
+    canvas.width  = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    gl.viewport(0, 0, canvas.width, canvas.height);
+  }
+  new ResizeObserver(resize).observe(canvas);
+  resize();
+
+  // --- mouse (only if trackMouse=true) ---
+  let mx = 0, my = 0, tmx = 0, tmy = 0;
+  if (trackMouse) {
+    window.addEventListener('mousemove', e => {
+      tmx = e.clientX;
+      tmy = window.innerHeight - e.clientY;
+    });
+  }
+
+  // --- visibility + opacity ---
+  let visible = false, opacity = 0, raf = 0;
+  const section = canvas.parentElement;
+  new IntersectionObserver(([e]) => {
+    visible = e.isIntersecting;
+    if (visible && !raf) frame();
+  }, { threshold: 0.05 }).observe(section);
+
+  // --- loop ---
+  const start = performance.now();
+  function frame() {
+    raf = 0;
+    opacity += ((visible ? maxOpacity : 0) - opacity) * 0.06;
+    canvas.style.opacity = String(opacity);
+
+    if (trackMouse) {
+      mx += (tmx - mx) * 0.05;
+      my += (tmy - my) * 0.05;
+    }
+
+    gl.uniform2f(uRes,   canvas.width, canvas.height);
+    gl.uniform1f(uTime,  (performance.now() - start) / 1000);
+    gl.uniform2f(uMouse, mx, my);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+    // keep running while visible or fading out
+    if (visible || opacity > 0.002) raf = requestAnimationFrame(frame);
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && visible && !raf) frame();
+  });
+}
+</script>

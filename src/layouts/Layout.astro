@@ -1,0 +1,89 @@
+---
+import '../styles/global.css';
+import ShaderBackground from '../components/ShaderBackground.astro';
+interface Props {
+  title?: string;
+}
+const { title = "Portfolio" } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <ShaderBackground />
+    <slot />
+    <script>
+      // Intersection observer for scroll-reveal animations
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('revealed');
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
+      );
+      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+      // Hover-to-play for all card videos
+      document.querySelectorAll('article').forEach((card) => {
+        const videos = card.querySelectorAll('video');
+        if (!videos.length) return;
+        card.addEventListener('mouseenter', () => videos.forEach(v => {
+          const start = parseFloat(v.dataset.start ?? '0');
+          if (start > 0 && v.currentTime < start) v.currentTime = start;
+          v.play();
+        }));
+        card.addEventListener('mouseleave', () => videos.forEach(v => {
+          v.pause();
+          const start = parseFloat(v.dataset.start ?? '0');
+          v.currentTime = start;
+        }));
+      });
+
+      // Accent color transition on section enter
+      const sections = document.querySelectorAll('[data-accent]');
+      const accentObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const accent = (entry.target as HTMLElement).dataset.accent!;
+              document.documentElement.style.setProperty('--accent', accent);
+            }
+          });
+        },
+        { threshold: 0.3 }
+      );
+      sections.forEach((s) => accentObserver.observe(s));
+    </script>
+    <style is:global>
+      .reveal {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+      .reveal.revealed {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .reveal-delay-1 { transition-delay: 0.1s; }
+      .reveal-delay-2 { transition-delay: 0.2s; }
+      .reveal-delay-3 { transition-delay: 0.3s; }
+      .reveal-delay-4 { transition-delay: 0.4s; }
+
+      /* CSS variable transition for accent color */
+      :root {
+        transition: --accent 0.6s ease;
+      }
+    </style>
+  </body>
+</html>

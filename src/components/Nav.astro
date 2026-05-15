@@ -1,0 +1,91 @@
+---
+const links = [
+  { label: 'About',        href: '#about',        color: '255 255 255' },
+  { label: 'Professional', href: '#professional',  color: '249 115 22'  },
+  { label: 'Education',    href: '#education',     color: '34 197 94'   },
+  { label: 'Personal',     href: '#personal',      color: '168 85 247'  },
+  { label: 'Academic',     href: '#academic',      color: '59 130 246'  },
+  { label: 'Math',         href: '#math',          color: '234 179 8'   },
+  { label: 'Demos',        href: '#demos',         color: '236 72 153'  },
+];
+---
+<nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="#" class="font-mono text-sm tracking-widest px-3 py-1 rounded-sm border border-[#a855f7]/50 text-white bg-black hover:border-[#a855f7] hover:bg-[#a855f7]/15 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#a855f7]/60 active:scale-95 transition-[border-color,background-color,transform] duration-150">
+      &lt;portfolio /&gt;
+    </a>
+    <ul class="hidden md:flex items-center gap-2">
+      {links.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            style={`--c: ${link.color};`}
+            class="nav-pill font-mono text-xs tracking-widest px-3 py-1 rounded-sm border text-white bg-black focus-visible:outline-none active:scale-95 transition-[border-color,background-color,transform] duration-150"
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+    <button id="menu-btn" class="md:hidden text-white/60 hover:text-white" aria-label="Menu">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+  </div>
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-[#0c0c0f]/95 backdrop-blur border-t border-white/5">
+    <ul class="flex flex-col px-6 py-4 gap-4">
+      {links.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            style={`--c: ${link.color};`}
+            class="mobile-nav-pill text-sm text-white/60 hover:text-white transition-colors mobile-nav-link"
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</nav>
+
+<style>
+  .nav-pill {
+    border-color: rgb(var(--c) / 0.4);
+  }
+  .nav-pill:hover {
+    border-color: rgb(var(--c) / 0.9);
+    background-color: rgb(var(--c) / 0.12);
+  }
+  .nav-pill:focus-visible {
+    box-shadow: 0 0 0 1px rgb(var(--c) / 0.6);
+  }
+</style>
+
+<script>
+  const nav = document.getElementById('nav')!;
+  const btn = document.getElementById('menu-btn')!;
+  const menu = document.getElementById('mobile-menu')!;
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 40) {
+      nav.style.background = 'rgba(12,12,15,0.9)';
+      nav.style.backdropFilter = 'blur(12px)';
+      nav.style.borderBottom = '1px solid rgba(255,255,255,0.06)';
+    } else {
+      nav.style.background = 'transparent';
+      nav.style.backdropFilter = 'none';
+      nav.style.borderBottom = 'none';
+    }
+  });
+
+  btn.addEventListener('click', () => {
+    menu.classList.toggle('hidden');
+  });
+
+  document.querySelectorAll('.mobile-nav-link').forEach((link) => {
+    link.addEventListener('click', () => menu.classList.add('hidden'));
+  });
+</script>

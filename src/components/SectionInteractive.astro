@@ -1,0 +1,100 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import { HYPERBOLIC } from '../shaders';
+const cid = `ic-${Math.random().toString(36).slice(2, 9)}`;
+---
+<section
+  id="demos"
+  data-accent="236 72 153"
+  class="py-24 px-6 max-w-6xl mx-auto"
+>
+  <SectionHeader
+    index="04"
+    title="Interactive Demos"
+    subtitle="Math running live in the browser — move your cursor."
+  />
+
+  <div class="reveal group relative rounded-sm overflow-hidden border border-white/[0.08] hover:border-[color:rgb(var(--accent)/0.4)] transition-colors duration-300" style="aspect-ratio:16/7;">
+    <canvas id={cid} class="absolute inset-0 w-full h-full" aria-hidden="true"></canvas>
+
+    <!-- bottom overlay -->
+    <div class="absolute inset-x-0 bottom-0 p-5 pointer-events-none bg-gradient-to-t from-black/60 via-black/20 to-transparent">
+      <p class="font-mono text-xs text-white/70 tracking-widest mb-0.5">HYPERBOLIC COMPLEX ITERATION</p>
+      <p class="font-mono text-[10px] text-white/30 tracking-wide">Custom arithmetic where addition follows tanh — move cursor to warp the basin.</p>
+    </div>
+
+    <!-- top-right hint -->
+    <div class="absolute top-4 right-4 pointer-events-none">
+      <span class="font-mono text-[10px] text-white/20 tracking-widest border border-white/[0.08] px-2 py-0.5 rounded-sm">INTERACTIVE ↖</span>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ fragSrc: HYPERBOLIC, canvasId: cid }}>
+const VERT = `attribute vec2 a_pos; void main(){ gl_Position=vec4(a_pos,0.,1.); }`;
+
+const canvas = document.getElementById(canvasId);
+if (canvas) {
+  const gl = canvas.getContext('webgl');
+  if (gl) {
+    function mk(type, src) {
+      const s = gl.createShader(type);
+      gl.shaderSource(s, src); gl.compileShader(s);
+      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS))
+        console.error('Shader error:', gl.getShaderInfoLog(s));
+      return s;
+    }
+    const prog = gl.createProgram();
+    gl.attachShader(prog, mk(gl.VERTEX_SHADER, VERT));
+    gl.attachShader(prog, mk(gl.FRAGMENT_SHADER, fragSrc));
+    gl.linkProgram(prog); gl.useProgram(prog);
+
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]), gl.STATIC_DRAW);
+    const pos = gl.getAttribLocation(prog, 'a_pos');
+    gl.enableVertexAttribArray(pos);
+    gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+
+    const uRes   = gl.getUniformLocation(prog, 'u_resolution');
+    const uTime  = gl.getUniformLocation(prog, 'u_time');
+    const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+    function resize() {
+      canvas.width  = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+      gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+    new ResizeObserver(resize).observe(canvas);
+    resize();
+
+    let mx = 0, my = 0, tmx = canvas.offsetWidth / 2, tmy = canvas.offsetHeight / 2;
+    window.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      tmx = e.clientX - rect.left;
+      tmy = rect.height - (e.clientY - rect.top);
+    });
+
+    const start = performance.now();
+    let raf = 0, demoVisible = false;
+    new IntersectionObserver(([e]) => {
+      demoVisible = e.isIntersecting;
+      if (demoVisible && !raf) frame();
+    }, { threshold: 0.05 }).observe(canvas.parentElement);
+
+    function frame() {
+      raf = 0;
+      mx += (tmx - mx) * 0.05;
+      my += (tmy - my) * 0.05;
+      gl.uniform2f(uRes,   canvas.width, canvas.height);
+      gl.uniform1f(uTime,  (performance.now() - start) / 1000);
+      gl.uniform2f(uMouse, mx, my);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+      if (demoVisible) raf = requestAnimationFrame(frame);
+    }
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && demoVisible && !raf) frame();
+    });
+  }
+}
+</script>

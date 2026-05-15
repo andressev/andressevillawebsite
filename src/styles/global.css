@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --accent: 255 255 255;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: #0c0c0f;
+    color: #e2e2e2;
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  }
+  ::selection {
+    background-color: rgb(var(--accent) / 0.25);
+    color: #fff;
+  }
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0c0c0f;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--accent) / 0.4);
+    border-radius: 2px;
+  }
+}
+
+@layer utilities {
+  .accent-color {
+    color: rgb(var(--accent));
+  }
+  .accent-border {
+    border-color: rgb(var(--accent) / 0.4);
+  }
+  .accent-bg {
+    background-color: rgb(var(--accent) / 0.08);
+  }
+  .accent-glow {
+    box-shadow: 0 0 24px rgb(var(--accent) / 0.15);
+  }
+  .section-line {
+    border-color: rgb(var(--accent) / 0.25);
+  }
+}

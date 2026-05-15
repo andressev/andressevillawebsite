@@ -1,0 +1,63 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import ProjectCard from './ProjectCard.astro';
+---
+<section
+  id="academic"
+  data-accent="59 130 246"
+  class="py-24 px-6 max-w-6xl mx-auto"
+>
+  <SectionHeader
+    index="05"
+    title="Academic Work"
+    subtitle="Research papers and simulations from university coursework and independent study."
+  />
+
+  <div class="grid md:grid-cols-2 gap-4">
+
+    <!-- Wide card: paper + simulation together -->
+    <article class="reveal group relative border border-white/[0.08] rounded-sm transition-all duration-300 overflow-hidden md:col-span-2 hover:border-[color:rgb(var(--accent)/0.35)] hover:bg-[color:rgb(var(--accent)/0.05)]">
+
+      <!-- Three screenshots in a row -->
+      <div class="grid grid-cols-3 border-b border-white/[0.06]">
+        <img src="/cr3bp1.png" alt="CR3BP trajectory over effective potential" class="w-full aspect-video object-cover opacity-75 group-hover:opacity-95 transition-opacity duration-300 border-r border-white/[0.06]" loading="lazy" />
+        <img src="/cr3bp2.png" alt="CR3BP Hill surfaces and Lagrange points" class="w-full aspect-video object-cover opacity-75 group-hover:opacity-95 transition-opacity duration-300 border-r border-white/[0.06]" loading="lazy" />
+        <img src="/cr3bp3.png" alt="CR3BP Lagrange point diamond configuration" class="w-full aspect-video object-cover opacity-75 group-hover:opacity-95 transition-opacity duration-300" loading="lazy" />
+      </div>
+
+      <div class="p-6">
+        <div class="flex items-start justify-between gap-4 mb-3">
+          <h3 class="font-mono text-xs tracking-widest px-2.5 py-1 rounded-sm border border-[color:rgb(var(--accent)/0.35)] text-white/80 group-hover:text-white group-hover:border-[color:rgb(var(--accent)/0.75)] bg-black/20 transition-colors">
+            Mecánica Celeste — Circular Restricted 3-Body Problem
+          </h3>
+          <div class="flex items-center gap-3 shrink-0">
+            <a href="/celestial-mechanics.pdf" target="_blank" rel="noopener noreferrer" class="text-xs text-white/30 hover:text-[color:rgb(var(--accent))] transition-colors border border-white/[0.08] px-2 py-0.5 rounded-sm hover:border-[color:rgb(var(--accent)/0.4)]">Paper ↗</a>
+          </div>
+        </div>
+        <p class="text-sm text-white/45 leading-relaxed mb-4">
+          A study of the CR3BP — the gravitational dynamics of a massless particle under two massive bodies in circular orbit. Built an interactive simulation visualizing the effective potential field, Hill surfaces, and the five Lagrange equilibrium points (L1–L5). Trajectories are integrated in real time and overlaid on the color-mapped potential landscape.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          {["Unity", "C#", "Numerical Integration", "Celestial Mechanics", "Simulation"].map(t => (
+            <span class="font-mono text-xs px-2 py-0.5 rounded-sm bg-white/[0.05] text-white/35 border border-white/[0.08]">{t}</span>
+          ))}
+        </div>
+      </div>
+
+      <!-- Simulation clips below -->
+      <div class="grid grid-cols-2 border-t border-white/[0.06]">
+        <video src="/cr3bp-sim1.mp4" loop muted playsinline class="w-full aspect-video object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300 border-r border-white/[0.06]"></video>
+        <video src="/cr3bp-sim2.mp4" loop muted playsinline class="w-full aspect-video object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300"></video>
+      </div>
+
+      <div class="absolute left-0 top-4 bottom-4 w-px bg-[color:rgb(var(--accent))] opacity-0 group-hover:opacity-50 transition-opacity duration-300 rounded-full"></div>
+    </article>
+
+    <ProjectCard
+      title="Desigualdad Isoperimétrica"
+      description="A proof of the isoperimetric inequality ℓ² ≥ 4πA — that among all closed simple curves with a given perimeter, the circle encloses maximum area. The proof reparametrizes the curve by arc length, expresses both ℓ² and A in terms of Fourier coefficients, then uses the Parseval identity to reduce the inequality to a purely algebraic statement. Equality holds only for the circle."
+      tags={["Analysis", "Fourier Series", "Differential Geometry", "Proof"]}
+    />
+
+  </div>
+</section>
