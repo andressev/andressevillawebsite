@@ -51,6 +51,108 @@ void main(){
   gl_FragColor=vec4(n*vec3(0.04,0.55,0.22),1.0);
 }`;
 
+export const NEBULA_PIXEL = `
+precision mediump float;
+uniform vec2  u_resolution;
+uniform float u_time;
+uniform vec2  u_mouse;
+
+float rand(vec2 p){ return fract(sin(dot(p,vec2(200.99,78.233)))*56758.5453); }
+float noise(vec2 p){
+  vec2 f=fract(p); f=f*f*(3.0-2.0*f); vec2 i=floor(p);
+  return mix(mix(rand(i),rand(i+vec2(1,0)),f.x),mix(rand(i+vec2(0,1)),rand(i+vec2(1,1)),f.x),f.y);
+}
+float fbm(vec2 p){
+  float v=0.0,a=1.0;
+  for(int i=0;i<4;i++){p=1.8*p+15.0;a*=0.5;v+=a*noise(p);}
+  return v;
+}
+void main(){
+  vec2 uv=gl_FragCoord.xy/u_resolution;
+
+  // pixelate — snap to grid before sampling
+  float px=80.0;
+  vec2 puv=floor(uv*px)/px;
+
+  vec2 p=2.0*puv;
+  vec2 r1=vec2(fbm(p+0.01*u_time),fbm(p+0.005*u_time));
+  vec2 r2=vec2(fbm(p+0.05*u_time+10.0*r1),fbm(p+0.12*u_time+12.0*r1));
+  float n=1.8*pow(fbm(p+r2),2.0)+0.03;
+  gl_FragColor=vec4(n*vec3(0.04,0.18,0.75),1.0);
+}`;
+
+export const CONSTELLATION = `
+precision mediump float;
+uniform vec2  u_resolution;
+uniform float u_time;
+uniform vec2  u_mouse;
+
+#define S(a,b,t) smoothstep(a,b,t)
+#define LINEWIDTH .02
+#define SCALE 10.
+#define DOTSIZE 12.
+
+float DistLine(vec2 p,vec2 a,vec2 b){
+  vec2 pa=p-a,ba=b-a;
+  float t=clamp(dot(pa,ba)/dot(ba,ba),0.,1.);
+  return length(pa-ba*t);
+}
+float N21(vec2 p){
+  p=fract(p*vec2(215.33,817.23));
+  p+=dot(p,p+25.24);
+  return fract(p.x*p.y);
+}
+vec2 N22(vec2 p){ float n=N21(p); return vec2(n,N21(p+n)); }
+vec2 GetPos(vec2 id,vec2 offset){
+  vec2 n=N22(id+offset)*u_time;
+  return offset+sin(n)*.9;
+}
+float Line(vec2 p,vec2 a,vec2 b){
+  float d=DistLine(p,a,b);
+  float m=S(LINEWIDTH,.01,d);
+  float d2=length(a-b);
+  m*=S(1.6,.3,d2)*.5+S(.05,.01,abs(d2-.75));
+  return m;
+}
+
+void main(){
+  vec2 uv=(gl_FragCoord.xy-.5*u_resolution.xy)/u_resolution.y;
+  float m=0.;
+  uv*=SCALE;
+  vec2 gv=fract(uv)-.5;
+  vec2 id=floor(uv);
+
+  vec2 p0=GetPos(id,vec2(-1.,-1.));
+  vec2 p1=GetPos(id,vec2( 0.,-1.));
+  vec2 p2=GetPos(id,vec2( 1.,-1.));
+  vec2 p3=GetPos(id,vec2(-1., 0.));
+  vec2 p4=GetPos(id,vec2( 0., 0.));
+  vec2 p5=GetPos(id,vec2( 1., 0.));
+  vec2 p6=GetPos(id,vec2(-1., 1.));
+  vec2 p7=GetPos(id,vec2( 0., 1.));
+  vec2 p8=GetPos(id,vec2( 1., 1.));
+
+  float t=u_time*10.;
+  vec2 pts[9];
+  pts[0]=p0; pts[1]=p1; pts[2]=p2;
+  pts[3]=p3; pts[4]=p4; pts[5]=p5;
+  pts[6]=p6; pts[7]=p7; pts[8]=p8;
+
+  for(int i=0;i<9;i++){
+    m+=Line(gv,p4,pts[i]);
+    vec2 j=(pts[i]-gv)*DOTSIZE;
+    float sparkle=1./dot(j,j);
+    m+=sparkle*(sin(t+fract(pts[i].x)*10.)*.5+.5);
+  }
+  m+=Line(gv,p1,p3);
+  m+=Line(gv,p1,p5);
+  m+=Line(gv,p7,p3);
+  m+=Line(gv,p7,p5);
+
+  vec3 col=vec3(m)*vec3(.1,.6,1.);
+  gl_FragColor=vec4(col,1.0);
+}`;
+
 export const STARFIELD = `
 precision highp float;
 uniform vec2  u_resolution;

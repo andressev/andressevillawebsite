@@ -8,9 +8,9 @@ import ProjectCard from './ProjectCard.astro';
   class="py-24 px-6 max-w-6xl mx-auto"
 >
   <SectionHeader
-    index="05"
-    title="Academic Work"
-    subtitle="Research papers and simulations from university coursework and independent study."
+    index="01"
+    title="Academic & Mathematical Work"
+    subtitle="Scientific visualizations, numerical simulations, and proofs — where mathematics meets real-time computation."
   />
 
   <div class="grid md:grid-cols-2 gap-4">
@@ -27,18 +27,18 @@ import ProjectCard from './ProjectCard.astro';
 
       <div class="p-6">
         <div class="flex items-start justify-between gap-4 mb-3">
-          <h3 class="font-mono text-xs tracking-widest px-2.5 py-1 rounded-sm border border-[color:rgb(var(--accent)/0.35)] text-white/80 group-hover:text-white group-hover:border-[color:rgb(var(--accent)/0.75)] bg-black/20 transition-colors">
+          <h3 class="font-mono text-xs tracking-widest px-2.5 py-1 rounded-sm border border-[color:rgb(var(--accent)/0.6)] bg-[color:rgb(var(--accent)/0.08)] text-white/85 group-hover:text-white group-hover:border-[color:rgb(var(--accent)/0.9)] group-hover:bg-[color:rgb(var(--accent)/0.15)] transition-colors">
             Mecánica Celeste — Circular Restricted 3-Body Problem
           </h3>
           <div class="flex items-center gap-3 shrink-0">
-            <a href="/celestial-mechanics.pdf" target="_blank" rel="noopener noreferrer" class="text-xs text-white/30 hover:text-[color:rgb(var(--accent))] transition-colors border border-white/[0.08] px-2 py-0.5 rounded-sm hover:border-[color:rgb(var(--accent)/0.4)]">Paper ↗</a>
+            <a href="/celestial-mechanics.pdf" target="_blank" rel="noopener noreferrer" class="font-mono text-xs tracking-widest px-3 py-1.5 rounded-sm border border-[color:rgb(var(--accent)/0.7)] bg-[color:rgb(var(--accent)/0.12)] text-white hover:bg-[color:rgb(var(--accent)/0.25)] hover:border-[color:rgb(var(--accent))] active:scale-95 transition-all duration-150 shrink-0">Read Paper ↗</a>
           </div>
         </div>
         <p class="text-sm text-white/45 leading-relaxed mb-4">
-          A study of the CR3BP — the gravitational dynamics of a massless particle under two massive bodies in circular orbit. Built an interactive simulation visualizing the effective potential field, Hill surfaces, and the five Lagrange equilibrium points (L1–L5). Trajectories are integrated in real time and overlaid on the color-mapped potential landscape.
+          Real-time scientific visualization of the Circular Restricted Three-Body Problem — the gravitational dynamics of a massless particle under two massive bodies in circular orbit. Implemented a numerical integrator for orbital trajectories, rendered the effective potential field as a color-mapped landscape, computed all five Lagrange equilibrium points (L1–L5), and visualized Hill surfaces as forbidden-region boundaries. Accompanied by a formal paper.
         </p>
         <div class="flex flex-wrap gap-2">
-          {["Unity", "C#", "Numerical Integration", "Celestial Mechanics", "Simulation"].map(t => (
+          {["Numerical Integration", "Celestial Mechanics", "Scientific Visualization", "C#", "Unity"].map(t => (
             <span class="font-mono text-xs px-2 py-0.5 rounded-sm bg-white/[0.05] text-white/35 border border-white/[0.08]">{t}</span>
           ))}
         </div>
@@ -47,16 +47,24 @@ import ProjectCard from './ProjectCard.astro';
       <!-- Simulation clips below -->
       <div class="grid grid-cols-2 border-t border-white/[0.06]">
         <video src="/cr3bp-sim1.mp4" loop muted playsinline class="w-full aspect-video object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300 border-r border-white/[0.06]"></video>
-        <video src="/cr3bp-sim2.mp4" loop muted playsinline class="w-full aspect-video object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300"></video>
+        <video src="/cr3bp-sim3.mp4" loop muted playsinline class="w-full aspect-video object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300"></video>
       </div>
 
       <div class="absolute left-0 top-4 bottom-4 w-px bg-[color:rgb(var(--accent))] opacity-0 group-hover:opacity-50 transition-opacity duration-300 rounded-full"></div>
     </article>
 
     <ProjectCard
+      title="Power Iteration — Eigenvalue Visualizer"
+      video="/power-iteration.mp4"
+      description="Real-time visualization of the power iteration algorithm. A point cloud of vectors fills 3D space — on each step, the linear transformation is applied to every point simultaneously. The cloud converges geometrically toward the dominant eigenvector direction, making the abstract convergence rate visible as a physical collapse in space."
+      tags={["Scientific Visualization", "Linear Algebra", "Numerical Methods", "Point Cloud", "C#"]}
+    />
+    <ProjectCard
+      image="/isoperimetric.jpg"
       title="Desigualdad Isoperimétrica"
       description="A proof of the isoperimetric inequality ℓ² ≥ 4πA — that among all closed simple curves with a given perimeter, the circle encloses maximum area. The proof reparametrizes the curve by arc length, expresses both ℓ² and A in terms of Fourier coefficients, then uses the Parseval identity to reduce the inequality to a purely algebraic statement. Equality holds only for the circle."
       tags={["Analysis", "Fourier Series", "Differential Geometry", "Proof"]}
+      links={[{ label: "Read Paper", href: "/Desigualdad isoperimétrica.pdf" }]}
     />
 
   </div>

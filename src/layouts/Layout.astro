@@ -34,20 +34,31 @@ const { title = "Portfolio" } = Astro.props;
       );
       document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 
-      // Hover-to-play for all card videos
+      // Video playback — hover on desktop, autoplay on touch devices
+      const isTouch = navigator.maxTouchPoints > 0;
       document.querySelectorAll('article').forEach((card) => {
         const videos = card.querySelectorAll('video');
         if (!videos.length) return;
-        card.addEventListener('mouseenter', () => videos.forEach(v => {
-          const start = parseFloat(v.dataset.start ?? '0');
-          if (start > 0 && v.currentTime < start) v.currentTime = start;
-          v.play();
-        }));
-        card.addEventListener('mouseleave', () => videos.forEach(v => {
-          v.pause();
-          const start = parseFloat(v.dataset.start ?? '0');
-          v.currentTime = start;
-        }));
+        if (isTouch) {
+          // On mobile: autoplay all videos (muted + playsinline already set)
+          videos.forEach(v => {
+            const start = parseFloat(v.dataset.start ?? '0');
+            if (start > 0) v.currentTime = start;
+            v.play();
+          });
+        } else {
+          // On desktop: play on hover
+          card.addEventListener('mouseenter', () => videos.forEach(v => {
+            const start = parseFloat(v.dataset.start ?? '0');
+            if (start > 0 && v.currentTime < start) v.currentTime = start;
+            v.play();
+          }));
+          card.addEventListener('mouseleave', () => videos.forEach(v => {
+            v.pause();
+            const start = parseFloat(v.dataset.start ?? '0');
+            v.currentTime = start;
+          }));
+        }
       });
 
       // Accent color transition on section enter
