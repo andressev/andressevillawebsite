@@ -10,7 +10,7 @@
   body {
     background-color: #0c0c0f;
     color: #e2e2e2;
-    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    font-family: 'Courier Prime', 'Courier New', monospace;
   }
   ::selection {
     background-color: rgb(var(--accent) / 0.25);

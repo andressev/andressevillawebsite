@@ -15,7 +15,7 @@ const { title = "Portfolio" } = Astro.props;
     <title>{title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   </head>
   <body>
     <ShaderBackground />
@@ -34,18 +34,31 @@ const { title = "Portfolio" } = Astro.props;
       );
       document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 
-      // Video playback — hover on desktop, autoplay on touch devices
+      // Video playback — hover on desktop, static poster on mobile
       const isTouch = navigator.maxTouchPoints > 0;
+
+      // On mobile: replace videos with poster images to avoid heavy downloads
+      if (isTouch) {
+        document.querySelectorAll('video').forEach(v => {
+          const poster = v.getAttribute('poster') || (v as HTMLVideoElement).dataset.poster;
+          if (poster) {
+            const img = document.createElement('img');
+            img.src = poster;
+            img.className = v.className;
+            img.setAttribute('loading', 'lazy');
+            v.parentNode?.replaceChild(img, v);
+          } else {
+            // No poster — just prevent loading
+            v.removeAttribute('src');
+          }
+        });
+      }
+
       document.querySelectorAll('article').forEach((card) => {
         const videos = card.querySelectorAll('video');
         if (!videos.length) return;
         if (isTouch) {
-          // On mobile: autoplay all videos (muted + playsinline already set)
-          videos.forEach(v => {
-            const start = parseFloat(v.dataset.start ?? '0');
-            if (start > 0) v.currentTime = start;
-            v.play();
-          });
+          // Videos already swapped to images above
         } else {
           // On desktop: play on hover
           card.addEventListener('mouseenter', () => videos.forEach(v => {

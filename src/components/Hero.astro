@@ -32,21 +32,36 @@
       GLSL · HLSL · C# · TouchDesigner · Unity. From shipping production systems on Apple Arcade
       to implementing numerical integrators, cellular automata engines, and fragment shader pipelines.
     </p>
-    <div class="reveal reveal-delay-3 flex flex-wrap gap-4">
-      <a
-        href="#professional"
-        class="font-mono text-xs tracking-widest px-3 py-1 rounded-sm border border-[#a855f7]/50 text-white bg-black hover:border-[#a855f7] hover:bg-[#a855f7]/15 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#a855f7]/60 active:scale-95 transition-[border-color,background-color,transform] duration-150"
-      >
-        View work
-      </a>
-      <a
-        href="mailto:andressevilla81@gmail.com"
-        class="px-5 py-2.5 text-sm text-white/40 hover:text-white/70 transition-colors duration-200 tracking-wide"
-      >
-        andressevilla81@gmail.com ↗
-      </a>
+    <div class="reveal reveal-delay-3 flex flex-wrap gap-2 mb-6">
+      {[
+        { label: 'Academic',     href: '#academic',      c: '59 130 246'  },
+        { label: 'Professional', href: '#professional',  c: '249 115 22'  },
+        { label: 'Education',    href: '#education',     c: '34 197 94'   },
+        { label: 'Personal',     href: '#personal',      c: '168 85 247'  },
+        { label: 'Math',         href: '#math',          c: '234 179 8'   },
+        { label: 'Demos',        href: '#demos',         c: '236 72 153'  },
+      ].map(link => (
+        <a
+          href={link.href}
+          style={`--lc:${link.c}`}
+          class="hero-pill font-mono text-xs tracking-widest px-3 py-1 rounded-sm border text-white bg-black active:scale-95 transition-[border-color,background-color,transform] duration-150"
+        >
+          {link.label}
+        </a>
+      ))}
     </div>
+    <a
+      href="mailto:andressevilla81@gmail.com"
+      class="reveal reveal-delay-3 text-sm text-white/35 hover:text-white/60 transition-colors duration-200 tracking-wide font-mono"
+    >
+      andressevilla81@gmail.com ↗
+    </a>
   </div>
+
+  <style>
+    .hero-pill { border-color: rgb(var(--lc) / 0.4); }
+    .hero-pill:hover { border-color: rgb(var(--lc) / 0.9); background-color: rgb(var(--lc) / 0.12); }
+  </style>
 
   <div class="absolute bottom-10 left-6 flex items-center gap-3 text-white/20">
     <div class="w-px h-12 bg-white/10"></div>
