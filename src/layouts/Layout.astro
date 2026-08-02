@@ -35,6 +35,15 @@ const base = import.meta.env.BASE_URL;
       );
       document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 
+      // Paint a real first frame as the thumbnail instead of a black box —
+      // seeking slightly after metadata loads forces the browser to decode
+      // a frame without playing or downloading the full video.
+      document.querySelectorAll('video').forEach((v) => {
+        v.addEventListener('loadedmetadata', () => {
+          if (v.currentTime === 0) v.currentTime = 0.1;
+        }, { once: true });
+      });
+
       // Video playback — hover on desktop, static poster on mobile
       // Use (pointer: coarse) + no hover to detect actual touch-primary devices
       // maxTouchPoints alone is unreliable (many laptops report > 0)
@@ -72,7 +81,7 @@ const base = import.meta.env.BASE_URL;
           card.addEventListener('mouseleave', () => videos.forEach(v => {
             v.pause();
             const start = parseFloat(v.dataset.start ?? '0');
-            v.currentTime = start;
+            v.currentTime = Math.max(start, 0.1);
           }));
         }
       });
