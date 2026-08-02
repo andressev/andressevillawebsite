@@ -35,7 +35,9 @@ const { title = "Portfolio" } = Astro.props;
       document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 
       // Video playback — hover on desktop, static poster on mobile
-      const isTouch = navigator.maxTouchPoints > 0;
+      // Use (pointer: coarse) + no hover to detect actual touch-primary devices
+      // maxTouchPoints alone is unreliable (many laptops report > 0)
+      const isTouch = window.matchMedia('(pointer: coarse) and (hover: none)').matches;
 
       // On mobile: replace videos with poster images to avoid heavy downloads
       if (isTouch) {
