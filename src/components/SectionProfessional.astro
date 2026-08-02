@@ -1,6 +1,7 @@
 ---
 import SectionHeader from './SectionHeader.astro';
 import ProjectCard from './ProjectCard.astro';
+const base = import.meta.env.BASE_URL;
 ---
 <section
   id="professional"
@@ -39,15 +40,15 @@ import ProjectCard from './ProjectCard.astro';
     <ProjectCard
       title="Moshpit"
       year="2024"
-      image="/Screenshot 2026-05-15 184058.png"
+      image={`${base}Screenshot 2026-05-15 184058.png`}
       description="Designed and implemented the complete UI system for Moshpit. The project required learning Unity Addressables from scratch — async asset bundle loading, runtime instantiation, and memory management to keep the interface responsive under real production constraints."
       tags={["Unity", "C#", "UI Systems", "Addressables", "Runtime Asset Loading"]}
     />
     <ProjectCard
       title="VR Interior Design Experience"
       year="2024"
-      video="/vr-interior.mp4"
-      videoPoster="/vr-interior-poster.jpg"
+      video={`${base}vr-interior.mp4`}
+      videoPoster={`${base}vr-interior-poster.jpg`}
       videoStart={3}
       wide={true}
       description="Built a real-time VR walkthrough for an interior design firm's client presentations. Worked throughout Unity's HDRP rendering pipeline: physically-based reflections, emissive surfaces, area lights, and hybrid baked/real-time global illumination. Performance-constrained target — optimized via occlusion culling, LOD hierarchies, draw call batching, and frame timing analysis to maintain stable VR frame rates."

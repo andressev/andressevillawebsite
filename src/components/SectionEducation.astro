@@ -3,6 +3,7 @@ import SectionHeader from './SectionHeader.astro';
 import ProjectCard from './ProjectCard.astro';
 import SectionCanvas from './SectionCanvas.astro';
 import { NEBULA } from '../shaders';
+const base = import.meta.env.BASE_URL;
 ---
 <section
   id="education"
@@ -27,13 +28,13 @@ import { NEBULA } from '../shaders';
       />
       <ProjectCard
         title="Meteorite 3D"
-        image="/meteorite3D.gif"
+        image={`${base}meteorite3D.gif`}
         description="AR experience using the device gyroscope for real-time 3D spatial navigation. The gyroscope is mapped directly to the camera orientation — rotating the device rotates the viewpoint in 3D space. Combines real-time AR rendering with an interactive knowledge system."
         tags={["Unity", "C#", "AR", "Spatial Computing", "Gyroscope", "Real-time 3D"]}
       />
       <ProjectCard
         title="Meteorite 2D"
-        image="/meteorite2d.gif"
+        image={`${base}meteorite2d.gif`}
         description="The original 2D version of Meteorite — a shoot 'em up in the tradition of 80s–90s arcade games. The foundation that the AR 3D version grew from, combining fast-paced gameplay with trivia questions."
         tags={["Unity", "C#", "2D", "Shoot 'em up", "Education"]}
       />

@@ -1,6 +1,7 @@
 ---
 import SectionHeader from './SectionHeader.astro';
 import ProjectCard from './ProjectCard.astro';
+const base = import.meta.env.BASE_URL;
 ---
 <section
   id="academic"
@@ -20,9 +21,9 @@ import ProjectCard from './ProjectCard.astro';
 
       <!-- Three screenshots in a row -->
       <div class="grid grid-cols-3 border-b border-white/[0.06]">
-        <img src="/cr3bp1.png" alt="CR3BP trajectory over effective potential" class="w-full aspect-video object-cover opacity-75 group-hover:opacity-95 transition-opacity duration-300 border-r border-white/[0.06]" loading="lazy" />
-        <img src="/cr3bp2.png" alt="CR3BP Hill surfaces and Lagrange points" class="w-full aspect-video object-cover opacity-75 group-hover:opacity-95 transition-opacity duration-300 border-r border-white/[0.06]" loading="lazy" />
-        <img src="/cr3bp3.png" alt="CR3BP Lagrange point diamond configuration" class="w-full aspect-video object-cover opacity-75 group-hover:opacity-95 transition-opacity duration-300" loading="lazy" />
+        <img src={`${base}cr3bp1.png`} alt="CR3BP trajectory over effective potential" class="w-full aspect-video object-cover opacity-75 group-hover:opacity-95 transition-opacity duration-300 border-r border-white/[0.06]" loading="lazy" />
+        <img src={`${base}cr3bp2.png`} alt="CR3BP Hill surfaces and Lagrange points" class="w-full aspect-video object-cover opacity-75 group-hover:opacity-95 transition-opacity duration-300 border-r border-white/[0.06]" loading="lazy" />
+        <img src={`${base}cr3bp3.png`} alt="CR3BP Lagrange point diamond configuration" class="w-full aspect-video object-cover opacity-75 group-hover:opacity-95 transition-opacity duration-300" loading="lazy" />
       </div>
 
       <div class="p-6">
@@ -31,7 +32,7 @@ import ProjectCard from './ProjectCard.astro';
             Mecánica Celeste — Circular Restricted 3-Body Problem
           </h3>
           <div class="flex items-center gap-3 shrink-0">
-            <a href="/celestial-mechanics.pdf" target="_blank" rel="noopener noreferrer" class="font-mono text-xs tracking-widest px-3 py-1.5 rounded-sm border border-[color:rgb(var(--accent)/0.7)] bg-[color:rgb(var(--accent)/0.12)] text-white hover:bg-[color:rgb(var(--accent)/0.25)] hover:border-[color:rgb(var(--accent))] active:scale-95 transition-all duration-150 shrink-0">Read Paper ↗</a>
+            <a href={`${base}celestial-mechanics.pdf`} target="_blank" rel="noopener noreferrer" class="font-mono text-xs tracking-widest px-3 py-1.5 rounded-sm border border-[color:rgb(var(--accent)/0.7)] bg-[color:rgb(var(--accent)/0.12)] text-white hover:bg-[color:rgb(var(--accent)/0.25)] hover:border-[color:rgb(var(--accent))] active:scale-95 transition-all duration-150 shrink-0">Read Paper ↗</a>
           </div>
         </div>
         <p class="text-sm text-white/45 leading-relaxed mb-4">
@@ -46,8 +47,8 @@ import ProjectCard from './ProjectCard.astro';
 
       <!-- Simulation clips below -->
       <div class="grid grid-cols-2 border-t border-white/[0.06]">
-        <video src="/cr3bp-sim1.mp4" poster="/cr3bp-sim1-poster.jpg" data-poster="/cr3bp-sim1-poster.jpg" loop muted playsinline preload="none" class="w-full aspect-video object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300 border-r border-white/[0.06]"></video>
-        <video src="/cr3bp-sim3.mp4" poster="/cr3bp-sim3-poster.jpg" data-poster="/cr3bp-sim3-poster.jpg" loop muted playsinline preload="none" class="w-full aspect-video object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300"></video>
+        <video src={`${base}cr3bp-sim1.mp4`} poster={`${base}cr3bp-sim1-poster.jpg`} data-poster={`${base}cr3bp-sim1-poster.jpg`} loop muted playsinline preload="none" class="w-full aspect-video object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300 border-r border-white/[0.06]"></video>
+        <video src={`${base}cr3bp-sim3.mp4`} poster={`${base}cr3bp-sim3-poster.jpg`} data-poster={`${base}cr3bp-sim3-poster.jpg`} loop muted playsinline preload="none" class="w-full aspect-video object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300"></video>
       </div>
 
       <div class="absolute left-0 top-4 bottom-4 w-px bg-[color:rgb(var(--accent))] opacity-0 group-hover:opacity-50 transition-opacity duration-300 rounded-full"></div>
@@ -55,16 +56,16 @@ import ProjectCard from './ProjectCard.astro';
 
     <ProjectCard
       title="Power Iteration — Eigenvalue Visualizer"
-      video="/power-iteration.mp4"
+      video={`${base}power-iteration.mp4`}
       description="Real-time visualization of the power iteration algorithm. A point cloud of vectors fills 3D space — on each step, the linear transformation is applied to every point simultaneously. The cloud converges geometrically toward the dominant eigenvector direction, making the abstract convergence rate visible as a physical collapse in space."
       tags={["Scientific Visualization", "Linear Algebra", "Numerical Methods", "Point Cloud", "C#"]}
     />
     <ProjectCard
-      image="/isoperimetric.jpg"
+      image={`${base}isoperimetric.jpg`}
       title="Desigualdad Isoperimétrica"
       description="A proof of the isoperimetric inequality ℓ² ≥ 4πA — that among all closed simple curves with a given perimeter, the circle encloses maximum area. The proof reparametrizes the curve by arc length, expresses both ℓ² and A in terms of Fourier coefficients, then uses the Parseval identity to reduce the inequality to a purely algebraic statement. Equality holds only for the circle."
       tags={["Analysis", "Fourier Series", "Differential Geometry", "Proof"]}
-      links={[{ label: "Read Paper", href: "/isoperimetrica.pdf" }]}
+      links={[{ label: "Read Paper", href: `${base}isoperimetrica.pdf` }]}
     />
 
   </div>
