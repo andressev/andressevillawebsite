@@ -11,7 +11,7 @@ const base = import.meta.env.BASE_URL;
   <SectionHeader
     index="01"
     title="Academic & Mathematical Work"
-    subtitle="Scientific visualizations, numerical simulations, and proofs — where mathematics meets real-time computation."
+    subtitle="Simulations have really helped me understand some mathematical enviroments. When aproaching a problem or a new subject I look for ways to simulate it so I can better understand it and interact with it in real time. Below are some of the sims I've built for this purpose."
   />
 
   <div class="grid md:grid-cols-2 gap-4">
@@ -29,14 +29,14 @@ const base = import.meta.env.BASE_URL;
       <div class="p-6">
         <div class="flex items-start justify-between gap-4 mb-3">
           <h3 class="font-mono text-xs tracking-widest px-2.5 py-1 rounded-sm border border-[color:rgb(var(--accent)/0.6)] bg-[color:rgb(var(--accent)/0.08)] text-white/85 group-hover:text-white group-hover:border-[color:rgb(var(--accent)/0.9)] group-hover:bg-[color:rgb(var(--accent)/0.15)] transition-colors">
-            Mecánica Celeste — Circular Restricted 3-Body Problem
+            Celestial Mechanics — Circular Restricted 3-Body Problem
           </h3>
           <div class="flex items-center gap-3 shrink-0">
             <a href={`${base}celestial-mechanics.pdf`} target="_blank" rel="noopener noreferrer" class="text-xs tracking-widest px-3 py-1.5 rounded-sm border border-[color:rgb(var(--accent)/0.7)] bg-[color:rgb(var(--accent)/0.12)] text-white hover:bg-[color:rgb(var(--accent)/0.25)] hover:border-[color:rgb(var(--accent))] active:scale-95 transition-all duration-150 shrink-0">Read Paper ↗</a>
           </div>
         </div>
         <p class="text-sm text-white/45 leading-relaxed mb-4">
-          Real-time scientific visualization of the Circular Restricted Three-Body Problem — the gravitational dynamics of a massless particle under two massive bodies in circular orbit. Implemented a numerical integrator for orbital trajectories, rendered the effective potential field as a color-mapped landscape, computed all five Lagrange equilibrium points (L1–L5), and visualized Hill surfaces as forbidden-region boundaries. Accompanied by a formal paper.
+          Real-time sim of the Circular Restricted Three-Body Problem, the gravitational dynamics of a massless particle like a satellite under two massive bodies in circular orbit. Numerical integrator for the trajectories with a trail renderer, rendered on the background the energy level of each point of the screen as a color-mapped landscape, computed all five Lagrange equilibrium points (L1–L5), and visualized Hill surfaces as forbidden-region boundaries. Accompanied by a formal paper.
         </p>
         <div class="flex flex-wrap gap-2">
           {["Numerical Integration", "Celestial Mechanics", "Scientific Visualization", "C#", "Unity"].map(t => (
