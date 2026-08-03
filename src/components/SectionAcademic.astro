@@ -10,7 +10,7 @@ const base = import.meta.env.BASE_URL;
 >
   <SectionHeader
     index="01"
-    title="Academic & Mathematical Work"
+    title="Mathematical & physical simulations"
     subtitle="Simulations have really helped me understand some mathematical enviroments. When aproaching a problem or a new subject I look for ways to simulate it so I can better understand it and interact with it in real time. Below are some of the sims I've built for this purpose."
   />
 
@@ -36,7 +36,7 @@ const base = import.meta.env.BASE_URL;
           </div>
         </div>
         <p class="text-sm text-white/45 leading-relaxed mb-4">
-          Real-time sim of the Circular Restricted Three-Body Problem, the gravitational dynamics of a massless particle like a satellite under two massive bodies in circular orbit. Numerical integrator for the trajectories with a trail renderer, rendered on the background the energy level of each point of the screen as a color-mapped landscape, computed all five Lagrange equilibrium points (L1–L5), and visualized Hill surfaces as forbidden-region boundaries. Accompanied by a formal paper.
+          Real-time sim of the Circular Restricted Three-Body Problem (CR3BP), the gravitational dynamics of a massless particle like a satellite under two massive bodies in circular orbit. Numerical integrator for the trajectories with a trail renderer, rendered on the background the energy level of each point of the screen as a color-mapped landscape. Accompanied by a formal paper introducing the CR3BP and more.
         </p>
         <div class="flex flex-wrap gap-2">
           {["Numerical Integration", "Celestial Mechanics", "Scientific Visualization", "C#", "Unity"].map(t => (
@@ -57,13 +57,13 @@ const base = import.meta.env.BASE_URL;
     <ProjectCard
       title="Power Iteration — Eigenvalue Visualizer"
       video={`${base}power-iteration.mp4`}
-      description="Real-time visualization of the power iteration algorithm. A point cloud of vectors fills 3D space — on each step, the linear transformation is applied to every point simultaneously. The cloud converges geometrically toward the dominant eigenvector direction, making the abstract convergence rate visible as a physical collapse in space."
+      description="Real-time visualization of the power iteration algorithm. A point cloud of vectors spread on R3, on each step, the linear transformation is applied to every point simultaneously. The cloud converges toward the dominant eigenvector direction, making the convergence rate visible as a physical collapse in space."
       tags={["Scientific Visualization", "Linear Algebra", "Numerical Methods", "Point Cloud", "C#"]}
     />
     <ProjectCard
       image={`${base}isoperimetric.jpg`}
       title="Desigualdad Isoperimétrica"
-      description="A proof of the isoperimetric inequality ℓ² ≥ 4πA — that among all closed simple curves with a given perimeter, the circle encloses maximum area. The proof reparametrizes the curve by arc length, expresses both ℓ² and A in terms of Fourier coefficients, then uses the Parseval identity to reduce the inequality to a purely algebraic statement. Equality holds only for the circle."
+      description="Given any closed curve with perimeter ℓ and area A the isoperimetric inequality states ℓ² ≥ 4πA. The proof reparametrizes the curve by arc length, expresses both ℓ² and A in terms of Fourier coefficients, then uses the Parseval identity to reduce the inequality to a purely algebraic statement. Equality holds only for the circle."
       tags={["Analysis", "Fourier Series", "Differential Geometry", "Proof"]}
       links={[{ label: "Read Paper", href: `${base}isoperimetrica.pdf` }]}
     />

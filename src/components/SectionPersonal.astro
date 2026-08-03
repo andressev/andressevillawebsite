@@ -34,7 +34,7 @@ const base = import.meta.env.BASE_URL;
             <a href="https://www.youtube.com/watch?v=BqFUAaOdQgY" target="_blank" rel="noopener noreferrer" class="text-xs text-white/30 hover:text-[color:rgb(var(--accent))] transition-colors border border-white/[0.08] px-2 py-0.5 rounded-sm hover:border-[color:rgb(var(--accent)/0.4)]">Video ↗</a>
           </div>
         </div>
-        <p class="text-sm text-white/45 leading-relaxed mb-4">GPU-parallel cellular automata engine written in HLSL. Cellular automata only become interesting at scale — so the entire simulation runs on the GPU via compute shaders, not the CPU. Users compose up to 4 rule sets with custom neighborhood kernels and mutate them in real time. The state space has 10³⁰⁸ configurations — the number of atoms in the observable universe is 10⁸⁰.</p>
+        <p class="text-sm text-white/45 leading-relaxed mb-4">Cellular automata made in Unity using compute shaders and pingpong buffers. Users can create multiple rules that acts as genes for the cellular automata and mutate them into new states.</p>
         <div class="flex flex-wrap gap-2">
           {["HLSL", "GPU Compute", "Parallel Simulation", "Procedural Generation", "C#"].map(t => (
             <span class="font-mono text-xs px-2 py-0.5 rounded-sm bg-white/[0.05] text-white/35 border border-white/[0.08]">{t}</span>
@@ -46,25 +46,25 @@ const base = import.meta.env.BASE_URL;
     <ProjectCard
       title="Pointcloud — Gravity Simulation"
       video="https://github.com/user-attachments/assets/5176f8b3-8e50-479f-a63c-6b3ed25c5d67"
-      description="Spacetime curvature rendered as a point cloud. ~200,000 points represent 3D space — each displaced by a gravitational potential field centered on a massive body. The compression gradient toward the center is physically derived, not aesthetic. Written in GLSL inside TouchDesigner."
+      description="Spacetime curvature rendered as a point cloud. ~200,000 points represent 3D space each displaced according to a function that approximates curvature for one body. Written in GLSL inside TouchDesigner."
       tags={["GLSL", "Fragment Shader", "Scientific Visualization", "Point Cloud", "TouchDesigner"]}
     />
     <ProjectCard
       title="Spherical Gravity"
       video="https://github.com/user-attachments/assets/4e5555e4-b39c-4b27-b432-19360064908a"
-      description="Extension of the gravity simulation — a angular transformation applied relative to the origin breaks the physical model into something purely generative. Same 200,000-point system, same GLSL pipeline, pushed into abstract territory."
+      description="Extension of the gravity simulation a angular transformation applied relative to the origin breaks the physical model into something purely generative. Same 200,000-point system, same GLSL pipeline, pushed into abstract territory."
       tags={["GLSL", "Fragment Shader", "Generative Systems", "TouchDesigner"]}
     />
     <ProjectCard
       title="Mandelbrot Explorer"
       video={`${base}MandelS.mov`}
-      description="Interactive Mandelbrot set explorer built as a GLSL fragment shader in TouchDesigner. Extended to be audio-reactive — frequency and amplitude data drive the iteration parameters and color mapping in real time, turning sound into geometry."
+      description="Interactive Mandelbrot set explorer built as a GLSL fragment shader in TouchDesigner. Extended to be audio-reactive frequency and amplitude data drive the iteration parameters and color mapping in real time."
       tags={["GLSL", "Fragment Shader", "Procedural Generation", "Audio-Reactive", "TouchDesigner"]}
     />
     <ProjectCard
       title="Mandelbrot 3D — Raymarched"
       video="https://github.com/user-attachments/assets/5d88fa54-8d69-4e60-a4db-23ef1f518690"
-      description="Mandelbulb rendered entirely in a GLSL fragment shader via raymarching. Adapted an existing distance estimator for the 3D Mandelbrot set, then built everything around it: the ray-march loop, surface normals derived from the SDF gradient, a lighting model with ambient occlusion, and a camera system — all running in real time inside TouchDesigner."
+      description="Mandelbulb rendered entirely in a GLSL fragment shader via raymarching. Adapted an existing distance estimator for the 3D Mandelbrot set, then built everything around it: the ray-march loop, surface normals derived from the SDF gradient, a lightning model, and a camera system all running in real time inside TouchDesigner."
       tags={["GLSL", "Raymarching", "Signed Distance Functions", "Real-time Rendering", "TouchDesigner"]}
     />
   </div>
